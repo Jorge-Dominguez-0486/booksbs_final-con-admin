@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Store</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.2">
+</head>
+<body>
+
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">&#9776;</label>
+    <nav class="menu-sidebar">
+        <ul>
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'proximos' %}">Proximos libros</a></li>
+            <li><a href="{% url 'bookstore' %}">Book Store</a></li>
+            <li><a href="{% url 'mis_libros' %}">Mis Libros</a></li>
+            <li><a href="{% url 'cuenta' %}">Mi Cuenta</a></li>
+        </ul>
+    </nav>
+    
+    <div class="page-container">
+
+        <header class="main-header">
+            <h1>Books BS</h1>
+        </header>
+
+        <main class="content">
+            <h2 class="welcome-title">Explora la Tienda</h2>
+
+            <div class="store-layout">
+                
+                <aside class="filter-sidebar">
+                    <h3>Géneros</h3>
+                    <ul>
+                        <li>
+                            <a href="{% url 'bookstore' %}" class="{% if not genero_id_activo %}active{% endif %}">
+                                Todos
+                            </a>
+                        </li>
+                        
+                        {% for genero in generos %}
+                        <li>
+                            <a href="{% url 'bookstore' %}?genero_id={{ genero.id }}" class="{% if genero_id_activo == genero.id %}active{% endif %}">
+                                {{ genero.nombre_genero }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </aside>
+
+                <div class="books-display">
+                    <div class="books-grid">
+
+                        {% for libro in libros %}
+                        <a href="{% url 'libro_detalle' libro.id %}" class="book-link">
+                            <div class="book-card-simple">
+                                <img src="{{ libro.portada.url }}" alt="{{ libro.titulo }}" class="book-cover">
+                                <div class="book-info">
+                                    <h4 class="book-title">{{ libro.titulo }}</h4>
+                                    <p class="book-author">
+                                        {% for autor in libro.autores.all %}{{ autor.nombre_autor }}{% endfor %}
+                                    </p>
+                                    
+                                    {% if libro.id in libros_adquiridos_ids %}
+                                        <span class="book-status owned">Ya lo tienes</span>
+                                    {% else %}
+                                        <span class="book-status not-owned">${{ libro.precio }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                        {% empty %}
+                            <p>No hay libros disponibles en esta categoría.</p>
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+            </div>
+        </main>
+        
+        <footer class="main-footer">
+            Libros shop 2025
+        </footer>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprar Libro</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="compra-page">
+
+    <a href="{% url 'libro_detalle' libro.id %}" class="back-arrow">&#8592;</a>
+
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">&#9776;</label>
+    <nav class="menu-sidebar">
+        <ul>
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'proximos' %}">Proximos libros</a></li>
+            <li><a href="{% url 'bookstore' %}">Book Store</a></li>
+            <li><a href="{% url 'mis_libros' %}">Mis Libros</a></li>
+            <li><a href="{% url 'cuenta' %}">Mi Cuenta</a></li>
+        </ul>
+    </nav>
+
+    <header class="main-header">
+        <h1>Confirmar Compra</h1>
+    </header>
+
+    <main class="content">
+        
+        <div class="checkout-layout">
+
+            <aside class="order-summary">
+                <h2>Resumen de tu Pedido</h2>
+                
+                <div class="order-item">
+                    <img src="{{ libro.portada.url }}" alt="{{ libro.titulo }}" class="order-item-cover">
+                    <div class="order-item-info">
+                        <h3 class="order-item-title">{{ libro.titulo }}</h3>
+                        <p class="order-item-price">${{ libro.precio }}</p>
+                    </div>
+                </div>
+                
+                <div class="order-total">
+                    <p>
+                        <span>Total</span>
+                        <span>${{ libro.precio }}</span>
+                    </p>
+                </div>
+            </aside>
+
+            <section class="payment-form">
+                
+                <form action="{% url 'procesar_compra' libro.id %}" method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="form-section">
+                        <h3>1. Información de la Cuenta</h3>
+                        <div class="user-info">
+                            <strong>{{ user.first_name }}</strong>
+                            <span>{{ user.email }}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>2. Método de Pago</h3>
+                        <div class="payment-method">
+                            <div class="payment-option selected">
+                                Tarjeta de Crédito/Débito (Simulado)
+                            </div>
+                        </div>
+                        <p class="payment-note">
+                            (Simulación) Al confirmar, el libro se añadirá a tu biblioteca.
+                        </p>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Confirmar y Pagar ${{ libro.precio }}</button>
+                </form>
+
+            </section>
+        </div>
+
+    </main>
+
+    <footer class="main-footer">
+        Libros shop 2025
+    </footer>
+    
+</body>
+</html>

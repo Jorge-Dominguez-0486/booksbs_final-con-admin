@@ -1,0 +1,46 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block titulo %}Ver Géneros{% endblock %}
+
+{% block contenido %}
+    <div class="header-with-action">
+        <h2>Gestión de Géneros</h2>
+        <a href="{% url 'dash_agregar_genero' %}" class="btn-action save">Agregar Nuevo Género</a>
+    </div>
+
+    {% if messages %}
+        <div class="messages-container-dash">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="table-container">
+        <table class="dashboard-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre del Género</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for genero in generos %}
+                <tr>
+                    <td>{{ genero.id }}</td>
+                    <td>{{ genero.nombre_genero }}</td>
+                    <td>
+                        <a href="{% url 'dash_editar_genero' genero.id %}" class="btn-action edit">Editar</a>
+                        <a href="{% url 'dash_borrar_genero' genero.id %}" class="btn-action delete">Borrar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No se han encontrado géneros.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

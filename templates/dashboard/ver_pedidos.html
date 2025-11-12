@@ -1,0 +1,36 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block titulo %}Ver Pedidos{% endblock %}
+
+{% block contenido %}
+<h2>Todos los Pedidos</h2>
+
+<div class="table-container">
+    <table class="dashboard-table">
+        <thead>
+            <tr>
+                <th>ID Pedido</th>
+                <th>Fecha</th>
+                <th>Usuario (Email)</th>
+                <th>Total Pagado</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in pedidos %}
+            <tr>
+                <td>{{ pedido.id }}</td>
+                <td>{{ pedido.fecha_pedido|date:"d M, Y - H:i" }}</td>
+                <td>{{ pedido.usuario.email }}</td>
+                <td>${{ pedido.total_pagado }}</td>
+                <td><span class="status-{{ pedido.estado_pago }}">{{ pedido.get_estado_pago_display }}</span></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No se han encontrado pedidos.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

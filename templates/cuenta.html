@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Cuenta</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="account-page">
+
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">&#9776;</label>
+    <nav class="menu-sidebar">
+        <ul>
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'proximos' %}">Proximos libros</a></li>
+            <li><a href="{% url 'bookstore' %}">Book Store</a></li>
+            <li><a href="{% url 'mis_libros' %}">Mis Libros</a></li>
+            <li><a href="{% url 'cuenta' %}">Mi Cuenta</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-container">
+
+        <header class="main-header">
+            <h1>Books BS</h1>
+        </header>
+
+        <main class="content">
+            
+            <div class="profile-card">
+                <div class="profile-icon-area">
+                    <div class="icon-head"></div>
+                    <div class="icon-body"></div>
+                </div>
+
+                <div class="profile-details-area">
+                    
+                    <p>
+                        Nombre:
+                        <span class="user-data" id="user-name">{{ user.first_name }}</span>
+                    </p>
+                    
+                    <p>
+                        Correo:
+                        <span class="user-data" id="user-email">{{ user.email }}</span>
+                    </p>
+                    
+                    <p>
+                        Libros Adquiridos:
+                        <span class="user-data" id="user-book-count">{{ conteo_libros }}</span>
+                    </p>
+
+                    <form action="{% url 'logout' %}" method="POST" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-btn">Cerrar Sesión</button>
+                    </form>
+                </div>
+            </div>
+
+        </main>
+        
+        <footer class="main-footer">
+            Libros shop 2025
+        </footer>
+
+    </div>
+    
+</body>
+</html>

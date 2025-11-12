@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Panel de Administración{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=1.2">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=1.2">
+</head>
+<body class="dashboard-body">
+
+    <div class="dashboard-container">
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <h3>Panel de Control</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="{% url 'dash_ver_pedidos' %}">Pedidos</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dash_ver_libros' %}">Libros</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dash_ver_usuarios' %}">Usuarios</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dash_ver_generos' %}">Géneros</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dash_ver_autores' %}">Autores</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'index' %}" class="nav-external">Salir al Sitio</a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="dashboard-main-content">
+            <header class="dashboard-header">
+                <form method="GET" class="search-form">
+                    <input type="search" name="q" placeholder="Buscar en esta sección..." value="{{ search_query|default:'' }}">
+                    <button type="submit">Buscar</button>
+                </form>
+                <div class="user-info-widget">
+                    <span>Hola, <strong>{{ user.username }}</strong></span>
+                </div>
+            </header>
+            
+            <div class="content-wrapper">
+                {% block contenido %}
+                <h2>Bienvenido al Panel</h2>
+                <p>Selecciona una opción del menú de la izquierda para comenzar.</p>
+                {% endblock %}
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

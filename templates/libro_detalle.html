@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ libro.titulo }}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="details-page">
+
+    <input type="checkbox" id="menu-toggle">
+    <label for="menu-toggle" class="menu-icon">&#9776;</label>
+    <nav class="menu-sidebar">
+        <ul>
+            <li><a href="{% url 'index' %}">Inicio</a></li>
+            <li><a href="{% url 'proximos' %}">Proximos libros</a></li>
+            <li><a href="{% url 'bookstore' %}">Book Store</a></li>
+            <li><a href="{% url 'mis_libros' %}">Mis Libros</a></li>
+            <li><a href="{% url 'cuenta' %}">Mi Cuenta</a></li>
+        </ul>
+    </nav>
+    
+    <div class="page-container">
+
+        <header class="main-header">
+            <h1>Books BS</h1>
+        </header>
+
+        <main class="content">
+
+            <div class="breadcrumb">
+                <a href="{% url 'bookstore' %}" class="back-link">&larr; Volver a la Tienda</a>
+            </div>
+
+            <div class="book-detail-container">
+                <div class="book-cover-wrapper">
+                    <img src="{{ libro.portada.url }}" alt="Portada {{ libro.titulo }}" class="book-cover-large">
+                </div>
+                
+                <div class="book-info-wrapper">
+                    <div class="book-info">
+                        <h2 class="book-title">{{ libro.titulo }}</h2>
+                        <p class="book-author">
+                            por 
+                            <span class="author-name">
+                                {% for autor in libro.autores.all %}
+                                    {{ autor.nombre_autor }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </span>
+                        </p>
+                        
+                        <p class="book-description">
+                            {{ libro.descripcion }}
+                        </p>
+
+                        <p><strong>Géneros:</strong> 
+                            <span class="genre-list">
+                                {% for genero in libro.generos.all %}
+                                    <span class="genre-tag">{{ genero.nombre_genero }}</span>
+                                {% endfor %}
+                            </span>
+                        </p>
+                        <p><strong>Formato:</strong> <strong>{{ libro.get_formato_display }}</strong></p>
+                    </div>
+
+                    <div class="action-box">
+                        
+                        {% if ya_adquirido %}
+                            <p class="book-status-owned">Ya está en tu biblioteca</p>
+                            <a href="{% url 'leer_libro' libro.id 1 %}" class="action-button read">Leer Ahora</a>
+                        {% else %}
+                            <p class="book-price">${{ libro.precio }} MXN</p>
+                            <a href="{% url 'compra' libro.id %}" class="action-button buy">Comprar Ahora</a>
+                        {% endif %}
+                    
+                    </div>
+                </div>
+            </div>
+
+        </main>
+        
+        <footer class="main-footer">
+            Libros shop 2025
+        </footer>
+
+    </div>
+</body>
+</html>
